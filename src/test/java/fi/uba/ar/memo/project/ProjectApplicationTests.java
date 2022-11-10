@@ -1,10 +1,10 @@
-package fi.uba.ar.memo.projects;
+package fi.uba.ar.memo.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProjectsApplicationTests {
+class ProjectApplicationTests {
 
 	@Test
 	void contextLoads() {

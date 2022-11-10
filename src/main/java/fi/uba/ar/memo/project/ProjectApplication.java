@@ -1,13 +1,13 @@
-package fi.uba.ar.memo.projects;
+package fi.uba.ar.memo.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjectsApplication {
+public class ProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjectsApplication.class, args);
+		SpringApplication.run(ProjectApplication.class, args);
 	}
 
 }

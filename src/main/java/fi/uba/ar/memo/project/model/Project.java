@@ -6,6 +6,7 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "projects")
 @Getter
 @Setter
 @NoArgsConstructor

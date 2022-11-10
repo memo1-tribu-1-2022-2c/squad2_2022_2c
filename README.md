@@ -11,8 +11,10 @@ mvn clean install
 Esto descargará las dependencias de ser necesario y generará un archivo `.jar` ejecutable en la carpeta target. Para levantar el proyecto se debe ejecutar el siguiente comando:
 
 ```bash
-java -jar .\target\projects-<VERSION>.jar
+java -jar .\target\projects-<VERSION>.jar --spring.config.location="path\al\perfil\que\usamos\application.properties"
 ```
+
+El perfil en la carpeta de resources de tests posee la configuración para levantar la base de datos en memoria. En cambio el perfil en la carpeta de resources de main posee la configuración para levantar la base de datos mysql en producción.
 
 El swagger se encuentra en el siguiente [link](http://localhost:8080/swagger-ui/index.html).
 

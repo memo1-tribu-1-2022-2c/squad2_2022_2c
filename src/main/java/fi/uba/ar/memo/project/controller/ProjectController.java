@@ -1,17 +1,26 @@
 package fi.uba.ar.memo.project.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import fi.uba.ar.memo.project.model.Project;
+import fi.uba.ar.memo.project.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/projects")
 public class ProjectController {
 
-    @GetMapping(path = "/test/{name}")
-    public String testEndpoint(@PathVariable String name) {
-        return name;
+    @Autowired
+    private ProjectService projectService;
+
+    @GetMapping(path = "/{id}")
+    public Optional<Project> getProject(@PathVariable Long id) {
+        return this.projectService.getProject(id);
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Project createProject(@RequestBody String description) { return this.projectService.createProject(description); }
 }

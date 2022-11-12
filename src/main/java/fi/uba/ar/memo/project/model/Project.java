@@ -34,10 +34,6 @@ public class Project {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
-    private List<Phase> phases;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_id")
     private List<Risk> risks;
 
     @ManyToMany(cascade = CascadeType.ALL)

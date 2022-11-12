@@ -1,19 +1,15 @@
 create table tbl_client (id bigint not null auto_increment, primary key (id));
-create table tbl_iteration (id bigint not null auto_increment, ending_date datetime(6), objective varchar(255), starting_date datetime(6), phase_id bigint, primary key (id));
-create table tbl_phase (id bigint not null auto_increment, ending_date datetime(6), name varchar(255), objective varchar(255), starting_date datetime(6), project_id bigint, primary key (id));
 create table tbl_project (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), name varchar(255), starting_date datetime(6), state integer, primary key (id));
 create table tbl_project_responsible_list (project_id bigint not null, responsible_list_id bigint not null);
 create table tbl_responsible (id bigint not null auto_increment, name varchar(255), role varchar(255), seniority varchar(255), primary key (id));
 create table tbl_responsible_projects (responsible_id bigint not null, projects_id bigint not null);
 create table tbl_responsible_tasks (responsible_id bigint not null, tasks_id bigint not null);
 create table tbl_risk (id bigint not null auto_increment, description varchar(255), impact varchar(255), probability double precision, project_id bigint, primary key (id));
-create table tbl_task (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), estimated_hours double precision, name varchar(255), starting_date datetime(6), state integer, iteration_id bigint, primary key (id));
+create table tbl_task (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), estimated_hours double precision, name varchar(255), starting_date datetime(6), state integer, primary key (id));
 create table tbl_task_responsible_list (task_id bigint not null, responsible_list_id bigint not null);
 create table tbl_task_tickets (task_id bigint not null, tickets_id bigint not null);
 create table tbl_ticket (id bigint not null auto_increment, description varchar(255), priority integer, project_name datetime(6), project_version datetime(6), state integer, title varchar(255), client_id bigint, primary key (id));
 create table tbl_ticket_tasks (ticket_id bigint not null, tasks_id bigint not null);
-alter table tbl_iteration add constraint FKh2yc36q6joch6mxv92vx7xomf foreign key (phase_id) references tbl_phase (id);
-alter table tbl_phase add constraint FKqg901jfp9kr4k5ju50el4cct2 foreign key (project_id) references tbl_project (id);
 alter table tbl_project_responsible_list add constraint FKr9og587wfoa5vmx6pe6wsyerk foreign key (responsible_list_id) references tbl_responsible (id);
 alter table tbl_project_responsible_list add constraint FKnrujk5o7yngad0w7ka6epvrxk foreign key (project_id) references tbl_project (id);
 alter table tbl_responsible_projects add constraint FKsbqwceljja91jv9p5ho8fuvmu foreign key (projects_id) references tbl_project (id);
@@ -21,7 +17,6 @@ alter table tbl_responsible_projects add constraint FKaw9s8kyprfvfunlc7hyuh7vly 
 alter table tbl_responsible_tasks add constraint FKggfnt9q5d34iei42sy6bktnp7 foreign key (tasks_id) references tbl_task (id);
 alter table tbl_responsible_tasks add constraint FKpk2p78wqmv2ejjs57tcmguq8m foreign key (responsible_id) references tbl_responsible (id);
 alter table tbl_risk add constraint FK409q59d8qdhp4kp8u0kyykqsm foreign key (project_id) references tbl_project (id);
-alter table tbl_task add constraint FK91cl21y9d2se8a86smyauyq8 foreign key (iteration_id) references tbl_iteration (id);
 alter table tbl_task_responsible_list add constraint FKk0dkygq1xqmswahhbnya0gpee foreign key (responsible_list_id) references tbl_responsible (id);
 alter table tbl_task_responsible_list add constraint FKkb1a64vepsn6vjfryx67qvbco foreign key (task_id) references tbl_task (id);
 alter table tbl_task_tickets add constraint FKaxj45ioe8habe4xpe7v3hetoq foreign key (tickets_id) references tbl_ticket (id);

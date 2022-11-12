@@ -35,6 +35,6 @@ public class Ticket {
 
     private Priority priority;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "tickets")
     private List<Task> tasks;
 }

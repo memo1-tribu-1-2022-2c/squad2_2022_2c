@@ -36,8 +36,10 @@ public class Task {
     private Double estimatedHours;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ticket_tasks",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
     private List<Ticket> tickets;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Responsible> responsibleList;
 }

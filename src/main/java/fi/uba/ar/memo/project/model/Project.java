@@ -32,10 +32,7 @@ public class Project {
 
     private LocalDateTime endingDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
-    private List<Risk> risks;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Responsible> responsibleList;
+    private List<Task> tasks;
 }

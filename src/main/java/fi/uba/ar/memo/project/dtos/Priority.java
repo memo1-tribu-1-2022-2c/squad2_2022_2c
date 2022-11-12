@@ -1,6 +1,6 @@
 package fi.uba.ar.memo.project.dtos;
 
-public enum ProjectPriority {
+public enum Priority {
     NONE,
     LOW,
     MEDIUM,

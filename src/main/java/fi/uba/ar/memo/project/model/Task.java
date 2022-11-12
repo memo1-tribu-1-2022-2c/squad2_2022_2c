@@ -2,19 +2,20 @@ package fi.uba.ar.memo.project.model;
 
 import fi.uba.ar.memo.project.dtos.State;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_project")
+@Table(name = "tbl_task")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +33,10 @@ public class Project {
 
     private LocalDateTime endingDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_id")
-    private List<Phase> phases;
+    private Double estimatedHours;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_id")
-    private List<Risk> risks;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Responsible> responsibleList;

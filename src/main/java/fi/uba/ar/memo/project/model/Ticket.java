@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.model;
 
+import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.State;
 import lombok.*;
 
@@ -8,13 +9,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_project")
+@Table(name = "tbl_ticket")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,24 +23,18 @@ public class Project {
     @Setter(AccessLevel.PRIVATE)
     private Long id;
 
-    private String name;
+    private String title;
 
     private String description;
 
     private State state;
 
-    private LocalDateTime startingDate;
+    private LocalDateTime projectName;
 
-    private LocalDateTime endingDate;
+    private LocalDateTime projectVersion;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_id")
-    private List<Phase> phases;
+    private Priority priority;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_id")
-    private List<Risk> risks;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Responsible> responsibleList;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Task> tasks;
 }

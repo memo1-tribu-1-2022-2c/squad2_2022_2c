@@ -26,4 +26,4 @@ Para levantar la base de datos hay que ejecutar con Docker:
 docker run --name memodb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass123 -d mysql
 ```
 
-Y para acomodar y crear las tablas se debe ejecutar el script sql en resources.
+Y para acomodar y crear las tablas se debe ejecutar el script sql en resources. Cada vez que se ejecute el servicio, se generará en la carpeta root del proyecto un archivo `create.sql` el cual contiene las queries para crear las tablas de la base de datos (se debe borrar la metadata innecesaria y agregar los `;` al final de las líneas, se recomienda editar el archivo en masa)

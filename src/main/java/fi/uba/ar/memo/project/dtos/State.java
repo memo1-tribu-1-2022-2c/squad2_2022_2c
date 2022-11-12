@@ -1,6 +1,6 @@
 package fi.uba.ar.memo.project.dtos;
 
-public enum ProjectStates {
+public enum State {
     NEW,
     IN_PROGRESS,
     PAUSED,

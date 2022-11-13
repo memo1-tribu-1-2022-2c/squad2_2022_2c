@@ -89,7 +89,7 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Project> findPaginatedProjects(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public List<Project> findPaginatedProjects() {
         return this.projectService.getAllProjects();
     }
 }

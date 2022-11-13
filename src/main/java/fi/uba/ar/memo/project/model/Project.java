@@ -2,6 +2,7 @@ package fi.uba.ar.memo.project.model;
 
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
+import fi.uba.ar.memo.project.exceptions.BadFieldException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,5 +45,11 @@ public class Project implements Serializable {
         this.state = State.NEW;
         this.startingDate = request.getStartingDate();
         this.endingDate = request.getEndingDate();
+
+        if (name == null || name.isBlank() ||
+            description == null || state == null ||
+            startingDate == null || endingDate == null) {
+            throw new BadFieldException("No fields should be blank or null to create a project.");
+        }
     }
 }

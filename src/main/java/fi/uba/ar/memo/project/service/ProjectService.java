@@ -12,6 +12,7 @@ import fi.uba.ar.memo.project.repository.ProjectRepository;
 import fi.uba.ar.memo.project.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,5 +77,9 @@ public class ProjectService {
         } else {
             throw new ResourceNotFound("Task was not found");
         }
+    }
+
+    public List<Project> getAllProjects() {
+        return this.projectRepository.findAll();
     }
 }

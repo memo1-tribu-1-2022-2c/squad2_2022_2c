@@ -7,6 +7,7 @@ import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Task> getTask(@PathVariable Long id)  {
         try {
             return ResponseEntity.of(this.taskService.getTask(id));
@@ -40,7 +41,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateTask(@RequestBody Task task) {
         try {
             this.taskService.updateTask(task);

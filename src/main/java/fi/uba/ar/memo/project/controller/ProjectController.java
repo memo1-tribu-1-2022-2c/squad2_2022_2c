@@ -7,11 +7,14 @@ import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Validated
@@ -22,7 +25,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> getProject(@PathVariable Long id) {
         try {
             return ResponseEntity.of(this.projectService.getProject(id));
@@ -31,7 +34,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createProject(@RequestBody ProjectCreationRequest request) {
         try {
@@ -58,7 +61,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping(path = "/{id}/createtask")
+    @PostMapping(path = "/{id}/createtask", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createTask(@RequestBody TaskCreationRequest request) {
         try {
@@ -83,5 +86,10 @@ public class ProjectController {
         } catch (ResourceNotFound e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Project> findPaginatedProjects(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return this.projectService.getAllProjects();
     }
 }

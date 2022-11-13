@@ -1,8 +1,7 @@
 package fi.uba.ar.memo.project.controller;
 
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
-import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
-import fi.uba.ar.memo.project.exceptions.BadFieldException;
+import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ProjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createProject(@RequestBody @NonNull ProjectCreationRequest request) {
+    public ResponseEntity createProject(@RequestBody ProjectCreationRequest request) {
         try {
             Project createdProject = this.projectService.createProject(request);
             return ResponseEntity.of(Optional.of(createdProject));
@@ -37,6 +36,20 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE).body(e.getMessage());
         } catch (BadFieldException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping(path = "/{id}/endproject")
+    public ResponseEntity endProject(@PathVariable Long id) {
+        try {
+            this.projectService.endProject(id);
+            return ResponseEntity.ok().build();
+        } catch (TaskAlreadyFinishedExcepiton e) {
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(e.getMessage());
+        } catch (ProjectNotFound e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (TaskNotFinishedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 }

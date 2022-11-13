@@ -1,8 +1,13 @@
 package fi.uba.ar.memo.project.service;
 
+import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
+import fi.uba.ar.memo.project.exceptions.ProjectNotFound;
+import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
+import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Project;
+import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +36,22 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
+    public void endProject(Long id) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            if (project.getState().equals(State.FINISHED)) {
+                throw new TaskAlreadyFinishedExcepiton("Project is already finished.");
+            } else if (project.getTasks()
+                              .stream()
+                              .anyMatch(t -> !t.getState().equals(State.FINISHED))) {
+                throw new TaskNotFinishedException("There are unfinished tasks.");
+            } else {
+                project.setState(State.FINISHED);
+                this.projectRepository.save(project);
+            }
+        } else {
+            throw new ProjectNotFound("The project was not found");
+        }
+    }
 }

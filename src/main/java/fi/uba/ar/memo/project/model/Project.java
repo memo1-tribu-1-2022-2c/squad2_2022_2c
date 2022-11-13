@@ -1,9 +1,11 @@
 package fi.uba.ar.memo.project.model;
 
 import fi.uba.ar.memo.project.dtos.State;
+import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +37,12 @@ public class Project {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private List<Task> tasks;
+
+    public Project(ProjectCreationRequest request) {
+        this.name = request.getName();
+        this.description = request.getDescription();
+        this.state = State.NEW;
+        this.startingDate = request.getStartingDate();
+        this.endingDate = request.getEndingDate();
+    }
 }

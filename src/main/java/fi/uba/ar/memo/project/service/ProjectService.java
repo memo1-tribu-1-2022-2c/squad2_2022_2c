@@ -1,5 +1,7 @@
 package fi.uba.ar.memo.project.service;
 
+import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
+import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
 import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Project createProject(String description) {
-        Project project = Project.builder().description(description).build();
+    public Project createProject(ProjectCreationRequest request) {
+        if (!request.getStartingDate().isBefore(request.getEndingDate())) {
+            throw new BadDateRangeException(String.format("Starting date %s must be before ending date %s.",
+                    request.getStartingDate(), request.getEndingDate()));
+        }
+        Project project = new Project(request);
         projectRepository.save(project);
         return project;
     }

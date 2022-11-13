@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.model;
 
+import fi.uba.ar.memo.project.dtos.ProjectType;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
@@ -36,6 +37,8 @@ public class Project implements Serializable {
 
     private LocalDateTime endingDate;
 
+    private ProjectType projectType;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private List<Task> tasks;
@@ -46,10 +49,11 @@ public class Project implements Serializable {
         this.state = State.NEW;
         this.startingDate = request.getStartingDate();
         this.endingDate = request.getEndingDate();
+        this.projectType = request.getProjectType();
 
         this.assertTimeRanges(request.getStartingDate(), request.getEndingDate());
 
-        if (name == null || name.isBlank() ||
+        if (name == null || name.isBlank() || projectType == null ||
             description == null || state == null ||
             startingDate == null || endingDate == null) {
             throw new BadFieldException("No fields should be blank or null to create a project.");
@@ -85,6 +89,9 @@ public class Project implements Serializable {
         }
         if (other.getEndingDate() != null) {
             this.endingDate = other.getEndingDate();
+        }
+        if (other.getProjectType() != null) {
+            this.projectType = other.getProjectType();
         }
     }
 }

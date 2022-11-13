@@ -1,6 +1,7 @@
 
 package fi.uba.ar.memo.project.dtos.requests;
 
+import fi.uba.ar.memo.project.dtos.ProjectType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,4 +20,6 @@ public class ProjectCreationRequest {
     private LocalDateTime startingDate;
 
     private LocalDateTime endingDate;
+
+    private ProjectType projectType;
 }

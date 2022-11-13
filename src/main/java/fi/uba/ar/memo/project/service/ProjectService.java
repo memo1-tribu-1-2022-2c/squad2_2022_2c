@@ -2,13 +2,14 @@ package fi.uba.ar.memo.project.service;
 
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
-import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
-import fi.uba.ar.memo.project.exceptions.ProjectNotFound;
+import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
+import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
 import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
+import fi.uba.ar.memo.project.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,16 +18,14 @@ import java.util.Optional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
     public Project createProject(ProjectCreationRequest request) {
-        if (!request.getStartingDate().isBefore(request.getEndingDate())) {
-            throw new BadDateRangeException(String.format("Starting date %s must be before ending date %s.",
-                    request.getStartingDate(), request.getEndingDate()));
-        }
         Project project = new Project(request);
         projectRepository.save(project);
         return project;
@@ -51,7 +50,31 @@ public class ProjectService {
                 this.projectRepository.save(project);
             }
         } else {
-            throw new ProjectNotFound("The project was not found");
+            throw new ResourceNotFound("The project was not found");
+        }
+    }
+
+    public Task createTask(TaskCreationRequest request) {
+        Optional<Project> projectFound = this.projectRepository.findById(request.getProjectId());
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            Task task = new Task(request);
+            project.addTask(task);
+            projectRepository.save(project);
+            return task;
+        } else {
+            throw new ResourceNotFound("The project was not found");
+        }
+    }
+
+    public void updateProject(Project newProject) {
+        Optional<Project> projectFound = this.projectRepository.findById(newProject.getId());
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            project.update(newProject);
+            this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
         }
     }
 }

@@ -4,5 +4,6 @@ public enum State {
     NEW,
     IN_PROGRESS,
     PAUSED,
-    FINISHED
+    FINISHED,
+    CANCELLED
 }

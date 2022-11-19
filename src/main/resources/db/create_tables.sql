@@ -1,5 +1,5 @@
 create table tbl_client (id bigint not null auto_increment, primary key (id));
-create table tbl_project (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), name varchar(255), starting_date datetime(6), state integer, primary key (id));
+create table tbl_project (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), name varchar(255), project_type integer, starting_date datetime(6), state integer, primary key (id));
 create table tbl_task (id bigint not null auto_increment, description varchar(255), ending_date datetime(6), estimated_hours double precision, name varchar(255), starting_date datetime(6), state integer, project_id bigint, primary key (id));
 create table tbl_ticket (id bigint not null auto_increment, description varchar(255), priority integer, project_name datetime(6), project_version datetime(6), state integer, title varchar(255), client_id bigint, primary key (id));
 create table ticket_tasks (task_id bigint not null, ticket_id bigint not null);

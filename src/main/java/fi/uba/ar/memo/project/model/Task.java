@@ -41,13 +41,9 @@ public class Task implements Serializable {
 
     private Double estimatedHours;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "ticket_tasks",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id")
-    )
-    private List<Ticket> tickets;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "resource_id")
+    private List<Resource> resources;
 
     public void update(Task other) {
         if (other.getStartingDate() != null && other.getEndingDate() != null)
@@ -99,7 +95,6 @@ public class Task implements Serializable {
             startingDate == null || endingDate == null) {
             throw new BadFieldException("No fields should be blank or null to create a task.");
         }
-
 
     }
 }

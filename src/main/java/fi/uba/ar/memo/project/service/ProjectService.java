@@ -1,7 +1,9 @@
 package fi.uba.ar.memo.project.service;
 
+import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
+import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -34,6 +37,10 @@ public class ProjectService {
 
     public Optional<Project> getProject(Long id) {
         return projectRepository.findById(id);
+    }
+
+    public Optional<Project> getProjectByClientId(int id) {
+        return projectRepository.findByClientId(id);
     }
 
     public void endProject(Long id) {
@@ -79,7 +86,14 @@ public class ProjectService {
         }
     }
 
-    public List<Project> getAllProjects() {
-        return this.projectRepository.findAll();
+    public List<ProjectResponse> getAllProjects() {
+        return this.projectRepository.findAll()
+                .stream()
+                .map(p -> new ProjectResponse(p, getClientDataFromId(p.getClientId())))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Client> getClientDataFromId(int clientId) {
+        return Optional.empty();
     }
 }

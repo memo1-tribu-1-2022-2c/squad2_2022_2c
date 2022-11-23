@@ -2,6 +2,7 @@
 package fi.uba.ar.memo.project.dtos.requests;
 
 import fi.uba.ar.memo.project.dtos.ProjectType;
+import fi.uba.ar.memo.project.model.Project;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@With
 @Builder
 public class ProjectCreationRequest {
 
@@ -22,4 +24,16 @@ public class ProjectCreationRequest {
     private LocalDateTime endingDate;
 
     private ProjectType projectType;
+
+    private int clientId;
+
+    public ProjectCreationRequest(Project other) {
+        this.name = other.getName();
+        this.description = other.getDescription();
+        this.startingDate = other.getStartingDate();
+        this.endingDate = other.getEndingDate();
+        this.projectType = other.getProjectType();
+        this.clientId = other.getClientId();
+    }
+
 }

@@ -1,6 +1,7 @@
 package fi.uba.ar.memo.project.dtos.requests;
 
 import fi.uba.ar.memo.project.dtos.State;
+import fi.uba.ar.memo.project.model.Task;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,4 +25,14 @@ public class TaskCreationRequest {
     private LocalDateTime endingDate;
 
     private Double estimatedHours;
+
+    public TaskCreationRequest(Task other) {
+        this.name = other.getName();
+        this.description = other.getDescription();
+        this.state = other.getState();
+        this.startingDate = other.getStartingDate();
+        this.endingDate = other.getEndingDate();
+        this.estimatedHours = other.getEstimatedHours();
+    }
+
 }

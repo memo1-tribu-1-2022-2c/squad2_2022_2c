@@ -1,6 +1,8 @@
 package fi.uba.ar.memo.project.controller;
 
+import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
+import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
@@ -26,9 +28,12 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Project> getProject(@PathVariable Long id) {
+    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long id) {
         try {
-            return ResponseEntity.of(this.projectService.getProject(id));
+            Optional<Project> project = this.projectService.getProject(id);
+            if (project.isEmpty()) throw new ResourceNotFound(String.format("El proyecto con id {} no se encontro", id));
+            Optional<Client> client = this.projectService.getClientDataFromId(project.get().getClientId());
+            return ResponseEntity.of(Optional.of(new ProjectResponse(project.get(), client)));
         } catch (ResourceNotFound e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -39,12 +44,30 @@ public class ProjectController {
     public ResponseEntity createProject(@RequestBody ProjectCreationRequest request) {
         try {
             Project createdProject = this.projectService.createProject(request);
-            return ResponseEntity.of(Optional.of(createdProject));
+            Optional<Client> client = this.projectService.getClientDataFromId(request.getClientId());
+            return ResponseEntity.of(Optional.of(new ProjectResponse(createdProject, client)));
         } catch (BadDateRangeException e) {
             return ResponseEntity.status(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE).body(e.getMessage());
         } catch (BadFieldException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @GetMapping(path = "/client/{id}")
+    public ResponseEntity getProjectByClientId(@RequestParam int id) {
+        try {
+            Optional<Project> project = this.projectService.getProjectByClientId(id);
+            if (project.isEmpty()) throw new ResourceNotFound(String.format("El proyecto con id {} no se encontro", id));
+            Optional<Client> client = this.projectService.getClientDataFromId(project.get().getClientId());
+            return ResponseEntity.of(Optional.of(new ProjectResponse(project.get(), client)));
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ProjectResponse> findPaginatedProjects() {
+        return this.projectService.getAllProjects();
     }
 
     @PatchMapping(path = "/{id}/endproject")
@@ -88,8 +111,4 @@ public class ProjectController {
         }
     }
 
-    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Project> findPaginatedProjects() {
-        return this.projectService.getAllProjects();
-    }
 }

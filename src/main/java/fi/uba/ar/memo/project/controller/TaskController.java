@@ -1,5 +1,7 @@
 package fi.uba.ar.memo.project.controller;
 
+import fi.uba.ar.memo.project.dtos.ResourceData;
+import fi.uba.ar.memo.project.dtos.requests.TaskResponse;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
 import fi.uba.ar.memo.project.exceptions.BadFieldException;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
@@ -11,6 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Validated
 @RestController
@@ -33,9 +38,11 @@ public class TaskController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Task> getTask(@PathVariable Long id)  {
+    public ResponseEntity<TaskResponse> getTask(@PathVariable Long id)  {
         try {
-            return ResponseEntity.of(this.taskService.getTask(id));
+            var task = this.taskService.getTask(id);
+            List<ResourceData> resourceDataList = this.taskService.getResourceDataList(task.get());
+            return ResponseEntity.of(Optional.of(new TaskResponse(task.get(), resourceDataList)));
         } catch (ResourceNotFound e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

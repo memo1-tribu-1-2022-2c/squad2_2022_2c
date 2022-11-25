@@ -13,6 +13,7 @@ import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import fi.uba.ar.memo.project.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,12 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
 
+    private final RestTemplate restTemplate;
+
     public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.restTemplate = new RestTemplate();
     }
 
     public Project createProject(ProjectCreationRequest request) {
@@ -94,6 +98,12 @@ public class ProjectService {
     }
 
     public Optional<Client> getClientDataFromId(int clientId) {
-        return Optional.empty();
+        String url = "https://modulo-soporte.onrender.com/client/search?query=" + clientId;
+        Client client = restTemplate.getForObject(url, Client.class);
+        if (client == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(client);
+        }
     }
 }

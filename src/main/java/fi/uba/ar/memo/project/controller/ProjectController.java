@@ -8,6 +8,11 @@ import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.ProjectService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -66,7 +71,7 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProjectResponse> findPaginatedProjects() {
+    public List<ProjectResponse> findListOfProjects() {
         return this.projectService.getAllProjects();
     }
 

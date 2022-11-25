@@ -13,7 +13,7 @@ public class Client {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("razon social")
+    @JsonProperty("razon_social")
     private String razonSocial;
 
     @JsonProperty("CUIT")

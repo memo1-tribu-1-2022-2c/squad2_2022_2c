@@ -23,9 +23,11 @@ public class ProjectResponse extends ProjectCreationRequest {
     public ProjectResponse(Project request, Optional<Client> client) {
         super(request);
         this.estimatedHours = 0d;
-        request.getTasks()
-                .stream()
-                .forEach(t -> estimatedHours += t.getEstimatedHours());
+        if (request.getTasks() != null) {
+            request.getTasks()
+                    .stream()
+                    .forEach(t -> estimatedHours += t.getEstimatedHours());
+        }
         if (client.isPresent()) {
             this.id = client.get().getId();
             this.razonSocial = client.get().getRazonSocial();

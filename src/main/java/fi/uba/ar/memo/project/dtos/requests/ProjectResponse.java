@@ -12,6 +12,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProjectResponse extends ProjectCreationRequest {
 
+    private Long projectId;
+
     private int id;
 
     private String razonSocial;
@@ -22,6 +24,7 @@ public class ProjectResponse extends ProjectCreationRequest {
 
     public ProjectResponse(Project request, Optional<Client> client) {
         super(request);
+        this.projectId = request.getId();
         this.estimatedHours = 0d;
         if (request.getTasks() != null) {
             request.getTasks()

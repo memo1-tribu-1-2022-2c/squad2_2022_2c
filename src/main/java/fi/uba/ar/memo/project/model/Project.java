@@ -57,7 +57,8 @@ public class Project implements Serializable {
         this.endingDate = request.getEndingDate();
         this.projectType = request.getProjectType();
         this.clientId = request.getClientId();
-        this.versionId = request.getVersionId();
+        if (request.getProjectType().equals(ProjectType.SUPPORT))
+            this.versionId = request.getVersionId();
 
         this.assertTimeRanges(request.getStartingDate(), request.getEndingDate());
 
@@ -103,5 +104,7 @@ public class Project implements Serializable {
         }
         this.versionId = other.getVersionId();
         this.clientId = other.getClientId();
+        if (other.getProjectType().equals(ProjectType.CLIENT))
+            this.versionId = -1;
     }
 }

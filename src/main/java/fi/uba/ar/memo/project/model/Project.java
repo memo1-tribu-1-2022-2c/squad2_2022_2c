@@ -43,6 +43,8 @@ public class Project implements Serializable {
 
     private int clientId;
 
+    private int versionId;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private List<Task> tasks;
@@ -55,6 +57,7 @@ public class Project implements Serializable {
         this.endingDate = request.getEndingDate();
         this.projectType = request.getProjectType();
         this.clientId = request.getClientId();
+        this.versionId = request.getVersionId();
 
         this.assertTimeRanges(request.getStartingDate(), request.getEndingDate());
 
@@ -98,5 +101,7 @@ public class Project implements Serializable {
         if (other.getProjectType() != null) {
             this.projectType = other.getProjectType();
         }
+        this.versionId = other.getVersionId();
+        this.clientId = other.getClientId();
     }
 }

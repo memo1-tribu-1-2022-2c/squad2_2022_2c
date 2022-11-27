@@ -27,6 +27,8 @@ public class ProjectCreationRequest {
 
     private int clientId;
 
+    private int versionId;
+
     public ProjectCreationRequest(Project other) {
         this.name = other.getName();
         this.description = other.getDescription();
@@ -34,6 +36,7 @@ public class ProjectCreationRequest {
         this.endingDate = other.getEndingDate();
         this.projectType = other.getProjectType();
         this.clientId = other.getClientId();
+        this.versionId = other.getVersionId();
     }
 
 }

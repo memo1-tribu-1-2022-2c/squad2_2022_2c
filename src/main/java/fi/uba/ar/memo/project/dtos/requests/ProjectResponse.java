@@ -14,8 +14,6 @@ public class ProjectResponse extends ProjectCreationRequest {
 
     private Long projectId;
 
-    private int id;
-
     private String razonSocial;
 
     private String cuit;
@@ -32,7 +30,6 @@ public class ProjectResponse extends ProjectCreationRequest {
                     .forEach(t -> estimatedHours += t.getEstimatedHours());
         }
         if (client.isPresent()) {
-            this.id = client.get().getId();
             this.razonSocial = client.get().getRazonSocial();
             this.cuit = client.get().getCuit();
         }

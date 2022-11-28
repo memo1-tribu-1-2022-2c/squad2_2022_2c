@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -59,15 +60,12 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/client/{id}")
-    public ResponseEntity getProjectByClientId(@RequestParam int id) {
-        try {
-            Optional<Project> project = this.projectService.getProjectByClientId(id);
-            if (project.isEmpty()) throw new ResourceNotFound(String.format("El proyecto con id {} no se encontro", id));
-            Optional<Client> client = this.projectService.getClientDataFromId(project.get().getClientId());
-            return ResponseEntity.of(Optional.of(new ProjectResponse(project.get(), client)));
-        } catch (ResourceNotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public List<ProjectResponse> getProjectsByClientId(@RequestParam int id) {
+        return this.projectService
+                .getProjectByClientId(id)
+                .stream()
+                .map(p -> new ProjectResponse(p, projectService.getClientDataFromId(p.getClientId())))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

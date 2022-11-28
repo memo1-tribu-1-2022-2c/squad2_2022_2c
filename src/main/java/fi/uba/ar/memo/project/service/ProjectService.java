@@ -43,7 +43,7 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Optional<Project> getProjectByClientId(int id) {
+    public List<Project> getProjectByClientId(int id) {
         return projectRepository.findByClientId(id);
     }
 

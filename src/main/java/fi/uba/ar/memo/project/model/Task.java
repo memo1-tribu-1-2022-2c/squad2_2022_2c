@@ -1,11 +1,11 @@
 package fi.uba.ar.memo.project.model;
 
+import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
 import fi.uba.ar.memo.project.exceptions.BadFieldException;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,16 +39,22 @@ public class Task implements Serializable {
 
     private LocalDateTime endingDate;
 
+    private LocalDateTime realEndingDate;
+
     private Double estimatedHours;
+
+    private Priority priority;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id")
     private List<Resource> resources;
 
     public void update(Task other) {
-        if (other.getStartingDate() != null && other.getEndingDate() != null)
+        if (other.getStartingDate() != null && other.getEndingDate() != null) {
             this.assertTimeRanges(other.getStartingDate(), other.getEndingDate());
-
+        } else if (other.getStartingDate() != null && other.getRealEndingDate() != null) {
+            this.assertTimeRanges(other.getStartingDate(), other.getRealEndingDate());
+        }
         if (other.getName() != null) {
             this.name = other.getName();
         }
@@ -67,6 +73,12 @@ public class Task implements Serializable {
         if (other.getEstimatedHours() != null && other.getEstimatedHours() >= 0) {
             this.estimatedHours = other.getEstimatedHours();
         }
+        if (other.getRealEndingDate() != null) {
+            this.realEndingDate = other.getRealEndingDate();
+        }
+        if (other.getPriority() != null) {
+            this.priority = other.getPriority();
+        }
     }
 
     private void assertTimeRanges(LocalDateTime startingDate, LocalDateTime endingDate) {
@@ -83,6 +95,8 @@ public class Task implements Serializable {
         this.startingDate = request.getStartingDate();
         this.endingDate = request.getEndingDate();
         this.estimatedHours = request.getEstimatedHours();
+        this.realEndingDate = request.getRealEndingDate();
+        this.priority = request.getPriority();
 
         if (estimatedHours != null && estimatedHours < 0 ) {
             throw new BadFieldException("Hours cannot be negative to create a task.");
@@ -92,7 +106,8 @@ public class Task implements Serializable {
 
         if (name == null || name.isBlank() ||
             description == null || state == null ||
-            startingDate == null || endingDate == null) {
+            startingDate == null || endingDate == null ||
+            realEndingDate == null || priority == null) {
             throw new BadFieldException("No fields should be blank or null to create a task.");
         }
 

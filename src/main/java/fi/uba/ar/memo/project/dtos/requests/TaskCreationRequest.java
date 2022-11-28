@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.dtos.requests;
 
+import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.model.Task;
 import lombok.*;
@@ -24,6 +25,10 @@ public class TaskCreationRequest {
 
     private LocalDateTime endingDate;
 
+    private LocalDateTime realEndingDate;
+
+    private Priority priority;
+
     private Double estimatedHours;
 
     public TaskCreationRequest(Task other) {
@@ -33,6 +38,8 @@ public class TaskCreationRequest {
         this.startingDate = other.getStartingDate();
         this.endingDate = other.getEndingDate();
         this.estimatedHours = other.getEstimatedHours();
+        this.realEndingDate = other.getRealEndingDate();
+        this.priority = other.getPriority();
     }
 
 }

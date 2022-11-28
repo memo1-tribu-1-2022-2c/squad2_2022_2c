@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.service;
 
+import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.exceptions.BadFieldException;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
@@ -29,6 +30,17 @@ public class TaskService {
             }
             Task task = taskFound.get();
             task.setEstimatedHours(hours);
+            taskRepository.save(task);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
+
+    public void setPriority(Long id, Priority priority) {
+        Optional<Task> taskFound = this.taskRepository.findById(id);
+        if (taskFound.isPresent()) {
+            Task task = taskFound.get();
+            task.setPriority(priority);
             taskRepository.save(task);
         } else {
             throw new ResourceNotFound("Task was not found");

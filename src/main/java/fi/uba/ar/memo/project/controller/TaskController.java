@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.controller;
 
+import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.requests.TaskResponse;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
@@ -29,6 +30,18 @@ public class TaskController {
     public ResponseEntity estimateTaskHours(@PathVariable Long id, @PathVariable Double hours) {
         try {
             this.taskService.estimateHours(id, hours);
+            return ResponseEntity.ok().build();
+        } catch (BadFieldException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping(path = "/{id}/priority/{priority}")
+    public ResponseEntity setPriority(@PathVariable Long id, @PathVariable Priority priority) {
+        try {
+            this.taskService.setPriority(id, priority);
             return ResponseEntity.ok().build();
         } catch (BadFieldException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -10,7 +10,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "tbl_project")
@@ -44,6 +46,12 @@ public class Project implements Serializable {
     private int clientId;
 
     private int versionId;
+
+    @ElementCollection
+    @JoinTable(name="tbl_role_to_resource_id", joinColumns=@JoinColumn(name="id"))
+    @MapKeyColumn (name="ROLE")
+    @Column(name="RESOURCEID")
+    private Map<String, Long> roleToResourceId = new HashMap<String, Long>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")

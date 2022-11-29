@@ -3,6 +3,7 @@ package fi.uba.ar.memo.project.controller;
 import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
 import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
+import fi.uba.ar.memo.project.dtos.requests.RoleToResourceIdRequest;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
@@ -113,5 +114,16 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PatchMapping(path = "/{id}/roles")
+    public ResponseEntity addRolesToProject(@RequestParam Long id, @RequestBody RoleToResourceIdRequest roles) {
+        try {
+            this.projectService.addRoles(id, roles);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 
 }

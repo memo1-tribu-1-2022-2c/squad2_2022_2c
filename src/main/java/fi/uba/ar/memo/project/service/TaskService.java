@@ -10,7 +10,6 @@ import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.TaskRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

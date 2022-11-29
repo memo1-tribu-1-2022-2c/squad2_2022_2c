@@ -4,6 +4,7 @@ import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
 import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
+import fi.uba.ar.memo.project.dtos.requests.RoleToResourceIdRequest;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
@@ -104,6 +105,18 @@ public class ProjectService {
             return Optional.empty();
         } else {
             return Optional.of(client);
+        }
+    }
+
+    public void addRoles(Long id, RoleToResourceIdRequest roles) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            var dict = project.getRoleToResourceId();
+            dict.putAll(roles.getRoleToResourceId());
+            this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
         }
     }
 }

@@ -1,6 +1,5 @@
 package fi.uba.ar.memo.project.service;
 
-import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.State;
@@ -69,7 +68,7 @@ public class TaskService {
         Optional<Task> taskFound = this.taskRepository.findById(newTask.getId());
         if (taskFound.isPresent()) {
             Task task = taskFound.get();
-            if (newTask.getState().equals(State.FINISHED)) {
+            if (newTask.getState().equals(State.FINALIZADO)) {
                 // I will be checking the previous task already defined, not the new id
                 this.validateThatICanFinish(task.getPreviousTaskId());
             }
@@ -82,7 +81,7 @@ public class TaskService {
 
     private void validateThatICanFinish(Long previousTaskId) {
         Optional<Task> prevTask = this.taskRepository.findById(previousTaskId);
-        if (prevTask.isPresent() && !prevTask.get().getState().equals(State.FINISHED)) {
+        if (prevTask.isPresent() && !prevTask.get().getState().equals(State.FINALIZADO)) {
             throw new TaskNotFinishedException(String.format("Cant finish this task without finishing the task with id {}", previousTaskId));
         }
     }

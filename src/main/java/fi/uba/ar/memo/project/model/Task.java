@@ -95,7 +95,7 @@ public class Task implements Serializable {
     public Task(TaskCreationRequest request) {
         this.name = request.getName();
         this.description = request.getDescription();
-        this.state = State.NEW;
+        this.state = State.NUEVO;
         this.startingDate = request.getStartingDate();
         this.endingDate = request.getEndingDate();
         this.estimatedHours = request.getEstimatedHours();

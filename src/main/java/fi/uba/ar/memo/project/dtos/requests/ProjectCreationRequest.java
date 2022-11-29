@@ -36,7 +36,7 @@ public class ProjectCreationRequest {
         this.endingDate = other.getEndingDate();
         this.projectType = other.getProjectType();
         this.clientId = other.getClientId();
-        if (other.getProjectType().equals(ProjectType.SUPPORT))
+        if (other.getProjectType().equals(ProjectType.SOPORTE))
             this.versionId = other.getVersionId();
     }
 

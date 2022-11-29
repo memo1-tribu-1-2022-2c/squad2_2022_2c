@@ -10,7 +10,6 @@ import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
 import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Project;
-import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import fi.uba.ar.memo.project.repository.TaskRepository;
@@ -54,14 +53,14 @@ public class ProjectService {
         Optional<Project> projectFound = this.projectRepository.findById(id);
         if (projectFound.isPresent()) {
             Project project = projectFound.get();
-            if (project.getState().equals(State.FINISHED)) {
+            if (project.getState().equals(State.FINALIZADO)) {
                 throw new TaskAlreadyFinishedExcepiton("Project is already finished.");
             } else if (project.getTasks()
                               .stream()
-                              .anyMatch(t -> !t.getState().equals(State.FINISHED))) {
+                              .anyMatch(t -> !t.getState().equals(State.FINALIZADO))) {
                 throw new TaskNotFinishedException("There are unfinished tasks.");
             } else {
-                project.setState(State.FINISHED);
+                project.setState(State.FINALIZADO);
                 this.projectRepository.save(project);
             }
         } else {

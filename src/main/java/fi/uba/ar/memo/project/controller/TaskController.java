@@ -21,6 +21,7 @@ import java.util.Optional;
 
 @Validated
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/v1/tasks")
 public class TaskController {
 

@@ -10,17 +10,19 @@ import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
 import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Project;
+import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import fi.uba.ar.memo.project.repository.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -73,8 +75,8 @@ public class ProjectService {
             Project project = projectFound.get();
             Task task = new Task(request);
             project.addTask(task);
-            projectRepository.save(project);
-            return task;
+            var createdProject = projectRepository.save(project);
+            return Collections.max(createdProject.getTasks(), Comparator.comparing(Task::getId));
         } else {
             throw new ResourceNotFound("The project was not found");
         }
@@ -115,6 +117,16 @@ public class ProjectService {
             var dict = project.getRoleToResourceId();
             dict.putAll(roles.getRoleToResourceId());
             this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
+
+    public Map<String, Long> getRolesFromProject(Long id) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            return project.getRoleToResourceId();
         } else {
             throw new ResourceNotFound("Task was not found");
         }

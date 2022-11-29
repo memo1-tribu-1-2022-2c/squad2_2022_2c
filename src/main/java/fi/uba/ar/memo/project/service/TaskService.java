@@ -119,4 +119,15 @@ public class TaskService {
             throw new ResourceNotFound("Task was not found");
         }
     }
+
+    public void addResource(Long id, int resourceIdentifier) {
+        Optional<Task> taskFound = this.taskRepository.findById(id);
+        if (taskFound.isPresent()) {
+            Task task = taskFound.get();
+            task.getResources().add(Resource.builder().resourceIdentifier(resourceIdentifier).build());
+            this.taskRepository.save(task);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
 }

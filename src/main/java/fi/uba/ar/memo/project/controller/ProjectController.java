@@ -7,6 +7,7 @@ import fi.uba.ar.memo.project.dtos.requests.RoleToResourceIdRequest;
 import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
+import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.ProjectService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -125,5 +126,13 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(path = "/{id}/roles")
+    public ResponseEntity getRolesFromProject(@RequestParam Long id) {
+        try {
+            return ResponseEntity.of(Optional.of(this.projectService.getRolesFromProject(id)));
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }

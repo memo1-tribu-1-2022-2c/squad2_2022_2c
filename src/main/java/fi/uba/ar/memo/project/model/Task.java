@@ -26,7 +26,6 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @Setter(AccessLevel.PRIVATE)
     private Long id;
 
     private String name;

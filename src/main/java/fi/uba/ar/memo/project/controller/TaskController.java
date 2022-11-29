@@ -6,6 +6,7 @@ import fi.uba.ar.memo.project.dtos.requests.TaskResponse;
 import fi.uba.ar.memo.project.exceptions.BadDateRangeException;
 import fi.uba.ar.memo.project.exceptions.BadFieldException;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
+import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,16 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @PutMapping(path = "/{id}/resource/{resourceIdentifier}")
+    public ResponseEntity addResource(@PathVariable Long id, @PathVariable int resourceIdentifier) {
+        try {
+            this.taskService.addResource(id, resourceIdentifier);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
     @PutMapping(path = "/{id}/previous/{previousId}")
     public ResponseEntity setPreviousTask(@PathVariable Long id, @PathVariable Long previousId) {

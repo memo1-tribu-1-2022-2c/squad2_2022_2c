@@ -1,6 +1,7 @@
 package fi.uba.ar.memo.project.dtos.requests;
 
 import fi.uba.ar.memo.project.dtos.Client;
+import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.model.Project;
 import lombok.*;
 
@@ -20,9 +21,12 @@ public class ProjectResponse extends ProjectCreationRequest {
 
     private Double estimatedHours;
 
+    private State state;
+
     public ProjectResponse(Project request, Optional<Client> client) {
         super(request);
         this.projectId = request.getId();
+        this.state = request.getState();
         this.estimatedHours = 0d;
         if (request.getTasks() != null) {
             request.getTasks()

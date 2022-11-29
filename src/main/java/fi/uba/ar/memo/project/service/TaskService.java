@@ -1,5 +1,6 @@
 package fi.uba.ar.memo.project.service;
 
+import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.Priority;
 import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.State;
@@ -9,8 +10,11 @@ import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
 import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.TaskRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,8 +24,12 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
+    private final RestTemplate restTemplate;
+
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
+        this.restTemplate = new RestTemplate();
+
     }
 
     public void estimateHours(Long id, Double hours) {
@@ -81,7 +89,17 @@ public class TaskService {
     }
 
     private ResourceData getDataFromResourceId(Resource resource) {
-        return null;
+        String url = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/recursos-psa/1.0.0/m/api/recursos";
+        ResourceData[] resourcesResp = restTemplate.getForObject(url, ResourceData[].class);
+        if (resourcesResp == null) {
+            return null;
+        } else {
+            List<ResourceData> resources = Arrays.asList(resourcesResp);
+            return resources.stream()
+                    .filter(r ->resource.getResourceIdentifier() == r.getLegajo())
+                    .findFirst()
+                    .orElse(null);
+        }
     }
 
     public List<ResourceData> getResourceDataList(Task task) {

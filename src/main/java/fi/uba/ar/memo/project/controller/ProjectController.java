@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT})
 @RequestMapping(value = "/api/v1/projects")
 public class ProjectController {
 

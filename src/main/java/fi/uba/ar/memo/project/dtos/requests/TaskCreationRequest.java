@@ -31,6 +31,8 @@ public class TaskCreationRequest {
 
     private Double estimatedHours;
 
+    private Long previousTaskId;
+
     public TaskCreationRequest(Task other) {
         this.name = other.getName();
         this.description = other.getDescription();
@@ -40,6 +42,7 @@ public class TaskCreationRequest {
         this.estimatedHours = other.getEstimatedHours();
         this.realEndingDate = other.getRealEndingDate();
         this.priority = other.getPriority();
+        this.previousTaskId = other.getPreviousTaskId();
     }
 
 }

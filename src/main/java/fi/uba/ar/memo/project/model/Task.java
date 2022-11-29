@@ -45,6 +45,8 @@ public class Task implements Serializable {
 
     private Priority priority;
 
+    private Long previousTaskId;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id")
     private List<Resource> resources;
@@ -79,6 +81,9 @@ public class Task implements Serializable {
         if (other.getPriority() != null) {
             this.priority = other.getPriority();
         }
+        if (other.getPreviousTaskId() > 0) {
+            this.previousTaskId = other.getPreviousTaskId();
+        }
     }
 
     private void assertTimeRanges(LocalDateTime startingDate, LocalDateTime endingDate) {
@@ -97,6 +102,7 @@ public class Task implements Serializable {
         this.estimatedHours = request.getEstimatedHours();
         this.realEndingDate = request.getRealEndingDate();
         this.priority = request.getPriority();
+        this.previousTaskId = request.getPreviousTaskId();
 
         if (estimatedHours != null && estimatedHours < 0 ) {
             throw new BadFieldException("Hours cannot be negative to create a task.");
@@ -104,7 +110,7 @@ public class Task implements Serializable {
 
         this.assertTimeRanges(request.getStartingDate(), request.getEndingDate());
 
-        if (name == null || name.isBlank() ||
+        if (name == null || name.isBlank() || previousTaskId < 0 ||
             description == null || state == null ||
             startingDate == null || endingDate == null ||
             realEndingDate == null || priority == null) {
@@ -112,4 +118,5 @@ public class Task implements Serializable {
         }
 
     }
+
 }

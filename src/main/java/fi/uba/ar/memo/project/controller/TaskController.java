@@ -26,6 +26,18 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @PutMapping(path = "/{id}/previous/{previousId}")
+    public ResponseEntity setPreviousTask(@PathVariable Long id, @PathVariable Long previousId) {
+        try {
+            this.taskService.setPreviousTask(id, previousId);
+            return ResponseEntity.ok().build();
+        } catch (BadFieldException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PatchMapping(path = "/{id}/estimateHours/{hours}")
     public ResponseEntity estimateTaskHours(@PathVariable Long id, @PathVariable Double hours) {
         try {

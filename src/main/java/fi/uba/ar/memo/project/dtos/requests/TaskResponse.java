@@ -14,8 +14,11 @@ public class TaskResponse extends TaskCreationRequest {
 
     List<ResourceData> resources;
 
+    private Long id;
+
     public TaskResponse(Task request, List<ResourceData> resources) {
         super(request);
+        this.id = request.getId();
         this.resources = resources;
     }
 }

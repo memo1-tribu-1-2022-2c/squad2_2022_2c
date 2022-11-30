@@ -60,7 +60,7 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/client/{id}")
-    public List<ProjectResponse> getProjectsByClientId(@RequestParam int id) {
+    public List<ProjectResponse> getProjectsByClientId(@PathVariable int id) {
         return this.projectService
                 .getProjectByClientId(id)
                 .stream()
@@ -69,7 +69,7 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/{id}/tasks")
-    public List<TaskResponse> getTasksByProjectId(@RequestParam Long id) {
+    public List<TaskResponse> getTasksByProjectId(@PathVariable Long id) {
         return this.projectService.getTasksFromProject(id);
     }
 
@@ -92,7 +92,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping(path = "/{id}/createtask", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/createtask", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createTask(@RequestBody TaskCreationRequest request) {
         try {
@@ -120,7 +120,7 @@ public class ProjectController {
     }
 
     @PatchMapping(path = "/{id}/roles")
-    public ResponseEntity addRolesToProject(@RequestParam Long id, @RequestBody RoleToResourceIdRequest roles) {
+    public ResponseEntity addRolesToProject(@PathVariable Long id, @RequestBody RoleToResourceIdRequest roles) {
         try {
             this.projectService.addRoles(id, roles);
             return ResponseEntity.ok().build();
@@ -130,7 +130,7 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/{id}/roles")
-    public ResponseEntity getRolesFromProject(@RequestParam Long id) {
+    public ResponseEntity getRolesFromProject(@PathVariable Long id) {
         try {
             return ResponseEntity.of(Optional.of(this.projectService.getRolesFromProject(id)));
         } catch (ResourceNotFound e) {

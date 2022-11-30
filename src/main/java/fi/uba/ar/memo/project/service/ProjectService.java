@@ -2,10 +2,7 @@ package fi.uba.ar.memo.project.service;
 
 import fi.uba.ar.memo.project.dtos.Client;
 import fi.uba.ar.memo.project.dtos.State;
-import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
-import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
-import fi.uba.ar.memo.project.dtos.requests.RoleToResourceIdRequest;
-import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
+import fi.uba.ar.memo.project.dtos.requests.*;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
 import fi.uba.ar.memo.project.exceptions.TaskAlreadyFinishedExcepiton;
 import fi.uba.ar.memo.project.exceptions.TaskNotFinishedException;
@@ -14,6 +11,7 @@ import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.repository.ProjectRepository;
 import fi.uba.ar.memo.project.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProjectService {
+
+    @Autowired
+    private TaskService taskService;
 
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
@@ -106,6 +107,19 @@ public class ProjectService {
             return Optional.empty();
         } else {
             return Optional.of(client);
+        }
+    }
+
+    public List<TaskResponse> getTasksFromProject(Long id) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            return project.getTasks()
+                        .stream()
+                        .map(t -> new TaskResponse(t, taskService.getResourceDataList(t)))
+                        .collect(Collectors.toList());
+        } else {
+            throw new ResourceNotFound("Task was not found");
         }
     }
 

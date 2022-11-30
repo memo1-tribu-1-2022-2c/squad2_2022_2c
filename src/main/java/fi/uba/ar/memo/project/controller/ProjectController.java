@@ -1,10 +1,7 @@
 package fi.uba.ar.memo.project.controller;
 
 import fi.uba.ar.memo.project.dtos.Client;
-import fi.uba.ar.memo.project.dtos.requests.ProjectCreationRequest;
-import fi.uba.ar.memo.project.dtos.requests.ProjectResponse;
-import fi.uba.ar.memo.project.dtos.requests.RoleToResourceIdRequest;
-import fi.uba.ar.memo.project.dtos.requests.TaskCreationRequest;
+import fi.uba.ar.memo.project.dtos.requests.*;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
 import fi.uba.ar.memo.project.model.Resource;
@@ -69,6 +66,11 @@ public class ProjectController {
                 .stream()
                 .map(p -> new ProjectResponse(p, projectService.getClientDataFromId(p.getClientId())))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/{id}/tasks")
+    public List<TaskResponse> getTasksByProjectId(@RequestParam Long id) {
+        return this.projectService.getTasksFromProject(id);
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

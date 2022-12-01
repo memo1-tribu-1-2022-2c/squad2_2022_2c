@@ -1,6 +1,7 @@
 package fi.uba.ar.memo.project.service;
 
 import fi.uba.ar.memo.project.dtos.Client;
+import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.State;
 import fi.uba.ar.memo.project.dtos.requests.*;
 import fi.uba.ar.memo.project.exceptions.ResourceNotFound;
@@ -143,5 +144,10 @@ public class ProjectService {
         } else {
             throw new ResourceNotFound("Task was not found");
         }
+    }
+
+    public ResourceData[] getAllResources() {
+        String url = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/recursos-psa/1.0.0/m/api/recursos";
+        return restTemplate.getForObject(url, ResourceData[].class);
     }
 }

@@ -1,6 +1,7 @@
 package fi.uba.ar.memo.project.controller;
 
 import fi.uba.ar.memo.project.dtos.Client;
+import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.requests.*;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
@@ -136,6 +137,11 @@ public class ProjectController {
         } catch (ResourceNotFound e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping(path = "/allresources")
+    public ResourceData[] getAllResources() {
+        return projectService.getAllResources();
     }
 
 }

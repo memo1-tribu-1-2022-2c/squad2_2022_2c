@@ -49,8 +49,8 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createProject(@RequestBody ProjectCreationRequest request) {
         try {
-            Project createdProject = this.projectService.createProject(request);
             Optional<Client> client = this.projectService.getClientDataFromId(request.getClientId());
+            Project createdProject = this.projectService.createProject(request);
             return ResponseEntity.of(Optional.of(new ProjectResponse(createdProject, client)));
         } catch (BadDateRangeException e) {
             return ResponseEntity.status(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE).body(e.getMessage());

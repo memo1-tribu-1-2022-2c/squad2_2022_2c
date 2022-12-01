@@ -104,7 +104,7 @@ public class ProjectService {
         String url = "https://modulo-soporte.onrender.com/client/search?query=" + clientId;
         Client client = restTemplate.getForObject(url, Client.class);
         if (client == null) {
-            return Optional.empty();
+            return Optional.of(new Client());
         } else {
             return Optional.of(client);
         }

@@ -90,7 +90,7 @@ public class TaskService {
         String url = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/recursos-psa/1.0.0/m/api/recursos";
         ResourceData[] resourcesResp = restTemplate.getForObject(url, ResourceData[].class);
         if (resourcesResp == null) {
-            return null;
+            return new ResourceData();
         } else {
             List<ResourceData> resources = Arrays.asList(resourcesResp);
             return resources.stream()

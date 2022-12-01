@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_task")
@@ -80,7 +81,7 @@ public class Task implements Serializable {
         if (other.getPriority() != null) {
             this.priority = other.getPriority();
         }
-        if (other.getPreviousTaskId() > 0) {
+        if (!Objects.isNull(other.getPreviousTaskId()) && other.getPreviousTaskId() > 0) {
             this.previousTaskId = other.getPreviousTaskId();
         }
     }

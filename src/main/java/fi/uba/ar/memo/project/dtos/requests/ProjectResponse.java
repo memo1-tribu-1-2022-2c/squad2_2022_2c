@@ -21,6 +21,8 @@ public class ProjectResponse extends ProjectCreationRequest {
 
     private Double estimatedHours;
 
+    private Double workedHours;
+
     private State state;
 
     public ProjectResponse(Project request, Optional<Client> client) {
@@ -28,10 +30,14 @@ public class ProjectResponse extends ProjectCreationRequest {
         this.projectId = request.getId();
         this.state = request.getState();
         this.estimatedHours = 0d;
+        this.workedHours = 0d;
         if (request.getTasks() != null) {
             request.getTasks()
                     .stream()
-                    .forEach(t -> estimatedHours += t.getEstimatedHours());
+                    .forEach(t -> {
+                        estimatedHours += t.getEstimatedHours();
+                        workedHours += t.getWorkedHours();
+                    });
         }
         if (client.isPresent()) {
             this.razonSocial = client.get().getRazonSocial();

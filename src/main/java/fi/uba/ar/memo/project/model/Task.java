@@ -47,6 +47,8 @@ public class Task implements Serializable {
 
     private Long previousTaskId;
 
+    private Double workedHours;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id")
     private List<Resource> resources;
@@ -81,6 +83,9 @@ public class Task implements Serializable {
         if (other.getPriority() != null) {
             this.priority = other.getPriority();
         }
+        if (other.getWorkedHours() != null) {
+            this.workedHours = other.getWorkedHours();
+        }
         if (!Objects.isNull(other.getPreviousTaskId()) && other.getPreviousTaskId() > 0) {
             this.previousTaskId = other.getPreviousTaskId();
         }
@@ -103,6 +108,7 @@ public class Task implements Serializable {
         this.realEndingDate = request.getRealEndingDate();
         this.priority = request.getPriority();
         this.previousTaskId = request.getPreviousTaskId();
+        this.workedHours = 0d;
 
         if (estimatedHours != null && estimatedHours < 0 ) {
             throw new BadFieldException("Hours cannot be negative to create a task.");

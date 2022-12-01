@@ -16,9 +16,12 @@ public class TaskResponse extends TaskCreationRequest {
 
     private Long id;
 
+    private Double workedHours;
+
     public TaskResponse(Task request, List<ResourceData> resources) {
         super(request);
         this.id = request.getId();
+        this.workedHours = request.getWorkedHours();
         this.resources = resources;
     }
 }

@@ -38,6 +38,13 @@ public class ProjectService {
     }
 
     public Project createProject(ProjectCreationRequest request) {
+        log.info(request.getName());
+        log.info(request.getDescription());
+        log.info(String.valueOf(request.getStartingDate()));
+        log.info(String.valueOf(request.getEndingDate()));
+        log.info(String.valueOf(request.getProjectType()));
+        log.info(String.valueOf(request.getClientId()));
+        log.info(String.valueOf(request.getVersionId()));
         Project project = new Project(request);
         projectRepository.save(project);
         return project;

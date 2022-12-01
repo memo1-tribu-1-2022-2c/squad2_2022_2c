@@ -5,16 +5,10 @@ import fi.uba.ar.memo.project.dtos.ResourceData;
 import fi.uba.ar.memo.project.dtos.requests.*;
 import fi.uba.ar.memo.project.exceptions.*;
 import fi.uba.ar.memo.project.model.Project;
-import fi.uba.ar.memo.project.model.Resource;
 import fi.uba.ar.memo.project.model.Task;
 import fi.uba.ar.memo.project.service.ProjectService;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT})
 @RequestMapping(value = "/api/v1/projects")
 public class ProjectController {
 

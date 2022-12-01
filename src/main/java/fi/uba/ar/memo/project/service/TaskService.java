@@ -112,8 +112,10 @@ public class TaskService {
         Optional<Task> prevTask = this.taskRepository.findById(previousId);
         if (optTask.isPresent() && prevTask.isPresent()) {
             Task task = optTask.get();
-            task.setPreviousTaskId(prevTask.get().getId());
-            this.taskRepository.save(task);
+            if (!prevTask.get().getEndingDate().isBefore(task.getStartingDate())) {
+                task.setPreviousTaskId(prevTask.get().getId());
+                this.taskRepository.save(task);
+            }
         } else {
             throw new ResourceNotFound("Task was not found");
         }

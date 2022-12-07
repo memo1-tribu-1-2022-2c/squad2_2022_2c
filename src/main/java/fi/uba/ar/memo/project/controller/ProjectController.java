@@ -123,6 +123,15 @@ public class ProjectController {
         }
     }
 
+    @PutMapping(path = "/{id}/role/{role}/resource/{resourceId}")
+    public ResponseEntity addRoleToProject(@PathVariable Long id, @PathVariable String role, @PathVariable Long resourceId) {
+        try {
+            this.projectService.addRole(id, role, resourceId);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     @GetMapping(path = "/{id}/roles")
     public ResponseEntity getRolesFromProject(@PathVariable Long id) {
         try {

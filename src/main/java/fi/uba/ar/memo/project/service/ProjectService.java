@@ -157,4 +157,16 @@ public class ProjectService {
         String url = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/recursos-psa/1.0.0/m/api/recursos";
         return restTemplate.getForObject(url, ResourceData[].class);
     }
+
+    public void addRole(Long id, String role, Long resourceId) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            var dict = project.getRoleToResourceId();
+            dict.put(role, resourceId);
+            this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
 }

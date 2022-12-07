@@ -169,4 +169,27 @@ public class ProjectService {
             throw new ResourceNotFound("Task was not found");
         }
     }
+
+    public void deleteAllRoles(Long id) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            project.getRoleToResourceId().clear();
+            this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
+
+    public void deleteRole(Long id, String role) {
+        Optional<Project> projectFound = this.projectRepository.findById(id);
+        if (projectFound.isPresent()) {
+            Project project = projectFound.get();
+            var dict = project.getRoleToResourceId();
+            dict.remove(role);
+            this.projectRepository.save(project);
+        } else {
+            throw new ResourceNotFound("Task was not found");
+        }
+    }
 }

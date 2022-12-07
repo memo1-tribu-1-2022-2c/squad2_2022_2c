@@ -146,4 +146,24 @@ public class ProjectController {
         return projectService.getAllResources();
     }
 
+    @DeleteMapping(path = "projects/{id}")
+    public ResponseEntity deleteAllRoles(@PathVariable Long id) {
+        try {
+            this.projectService.deleteAllRoles(id);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping(path = "projects/{id}/role/{role}")
+    public ResponseEntity deleteCertainRole(@PathVariable Long id, @PathVariable String role) {
+        try {
+            this.projectService.deleteRole(id, role);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }
